@@ -18,8 +18,8 @@ namespace ChatAI.VistaModelo
     public class ChatViewModel : ViewModelBase
     {
         private readonly HttpClient _httpClient = new();
-        private readonly SpeechToText speechToText = new SpeechToText();
-        private readonly TextToSpeech textToSpeech = new TextToSpeech();
+        private readonly SpeechToText speechToText = new();
+        private readonly TextToSpeech textToSpeech = new();
         private string _text;
         private bool _isSend;
         private bool _isRecording = false;
@@ -100,7 +100,7 @@ namespace ChatAI.VistaModelo
         {
             if (IsSend)
             {
-                await EnviarMensaje();
+                await SendMessage();
             }
             else
             {
@@ -108,7 +108,7 @@ namespace ChatAI.VistaModelo
             }
         }
 
-        private async Task EnviarMensaje()
+        private async Task SendMessage()
         {
             var mensajeUsuario = new Mensaje { Contenido = Text, EsUsuario = true };
             MessageHistory.Add(mensajeUsuario);
@@ -116,23 +116,11 @@ namespace ChatAI.VistaModelo
             IsSend = false;
             ((RelayCommand)ButtonClickedCommand).RaiseCanExecuteChanged();
 
-            var requestBody = new
-            {
-                messages = new[]
-                {
-                    new { content = "Me llamo Goyo y soy un asistente que habla en español.", role = "system" },
-                    new { content = mensajeUsuario.Contenido, role = "user" }
-                },
-                model = "llama3.2-1b-instruct",
-                max_tokens = 2048
-            };
-
-            var json = JsonSerializer.Serialize(requestBody);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpContent httpContent = CreateContent(mensajeUsuario);
 
             try
             {
-                var response = await _httpClient.PostAsync("http://localhost:1337/v1/chat/completions", content);
+                var response = await _httpClient.PostAsync("http://localhost:1337/v1/chat/completions", httpContent);
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var resultado = JsonSerializer.Deserialize<ChatResponse>(responseBody);
