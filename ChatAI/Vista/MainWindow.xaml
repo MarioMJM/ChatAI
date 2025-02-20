@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MIA" Height="450" Width="800">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBox">
@@ -68,6 +68,45 @@
                 </Setter>
             </Style>
 
+            <Style TargetType="Button" x:Key="PanelButtonStyle">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="Foreground" Value="White"/>
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="Width" Value="35"/>
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Tag" Value="/Resources/Images/new_button_icon_w.png"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="BorderButton"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0"
+                                    CornerRadius="20"
+                                    Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}">
+                                <Image x:Name="ButtonIcon"
+                                       Width="25" Height="25"
+                                       Source="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Tag}"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" TargetName="BorderButton" Value="#333333"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" TargetName="BorderButton" Value="#555555"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" TargetName="BorderButton" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
             <Style TargetType="Button" x:Key="ControlButton" BasedOn="{StaticResource RoundedButtonStyle}">
                 <Setter Property="Width" Value="30"/>
                 <Setter Property="Height" Value="30"/>
@@ -104,112 +143,162 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-
-
-
+        
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="6*"/>
-            <RowDefinition Height="70"/>
-        </Grid.RowDefinitions>
-
-        <ui:ScrollViewerEx Grid.Row="0" Margin="10">
-
-        </ui:ScrollViewerEx>
-
-        <ListBox ItemsSource="{Binding MessageHistory}" Margin="10" Grid.Row="0" Background="Transparent">
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="HorizontalContentAlignment">
-                        <Setter.Value>
-                            <Binding Path="EsUsuario">
-                                <Binding.Converter>
-                                    <converters:BoolToHorizontalAlignmentConverter/>
-                                </Binding.Converter>
-                            </Binding>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ListBox.ItemContainerStyle>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Padding="8"
-                            Margin="15"
-                            Background="{Binding EsUsuario, Converter={StaticResource BoolToColorConverter}}"
-                            CornerRadius="5"
-                            MaxWidth="600"
-                            MinWidth="200">
-                        <StackPanel Orientation="Vertical">
-                            <TextBlock Text="{Binding Contenido}" TextWrapping="Wrap"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                <Button 
-                                    Style="{StaticResource ControlButton}"
-                                    Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
-                                    Command="{Binding DataContext.ReadMessageCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    CommandParameter="{Binding Contenido}"
-                                    Tag="/Resources/Images/text_to_speech_icon.png"/>
-                                <Button 
-                                    Style="{StaticResource ControlButton}"
-                                    Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
-                                    Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                    CommandParameter="{Binding Contenido}"
-                                    Tag="/Resources/Images/clipboard_icon.png"/>
+        <DockPanel LastChildFill="True">
+            <Grid Background="#1E1E1E" Width="60" HorizontalAlignment="Left" DockPanel.Dock="Left">
+                <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Button 
+                        Style="{StaticResource PanelButtonStyle}"
+                        Tag="/Resources/Images/new_button_icon_w.png"
+                        Click="HandleNewChat"/>
+                    <Button 
+                        x:Name="ButtonConfig" 
+                        Style="{StaticResource PanelButtonStyle}" 
+                        Tag="/Resources/Images/config_button_icon_w.png"
+                        Click="ButtonConfig_Click"/>
+                    <Popup x:Name="PopupConfig"
+                           PlacementTarget="{Binding ElementName=ButtonConfig}"
+                           Placement="Right"
+                           StaysOpen="False"
+                           HorizontalOffset="10" VerticalOffset="0">
+                        <Border Background="#1E1E1E"
+                                CornerRadius="4"
+                                Padding="10"
+                                Width="180"
+                                Height="80">
+                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock x:Name="ModeLabel" Text="Dark Mode" Foreground="White" FontSize="14" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                                <ui:ToggleSwitch x:Name="SwitchMode" OnContent="Oscuro" OffContent="Claro" Toggled="ToggleSwitch_Toggled"/>
                             </StackPanel>
-                        </StackPanel>
-
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-
-        <Border Background="#1E1E1E"
-                CornerRadius="20"
-                Margin="12"
-                Grid.Row="1"
-                Width="600">
-
-            <Grid Grid.Row="1" MaxHeight="100">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="8*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <TextBox x:Name="UserInput"
-                         Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
-                         Grid.Column="1"
-                         Background="#1E1E1E"
-                         Foreground="White"
-                         BorderThickness="0"
-                         FontSize="14"
-                         VerticalAlignment="Center"/>
-
-                <Button x:Name="ToggleButton"
-                        Height="35"
-                        Width="35"
-                        Margin="5"
-                        Grid.Column="2"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource RoundedButtonStyle}"
-                        Command="{Binding ButtonClickedCommand}">
-                </Button>
-                <Popup IsOpen="{Binding IsRecording}"
-                       PlacementTarget="{Binding ElementName=ToggleButton}"
-                       Placement="Top"
-                       StaysOpen="True">
-                    <Border Background="#1E1E1E"
-                            CornerRadius="4"
-                            Padding="8">
-                        <TextBlock Text="Micrófono activo" Foreground="White"/>
-                    </Border>
-                </Popup>
+                        </Border>
+                    </Popup>
+                </StackPanel>
             </Grid>
-        </Border>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="70"/>
+                </Grid.RowDefinitions>
+
+                <ListBox ItemsSource="{Binding MessageHistory}" Margin="10" Grid.Row="0" Background="Transparent">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="HorizontalContentAlignment">
+                                <Setter.Value>
+                                    <Binding Path="EsUsuario">
+                                        <Binding.Converter>
+                                            <converters:BoolToHorizontalAlignmentConverter/>
+                                        </Binding.Converter>
+                                    </Binding>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="8"
+                                    Margin="15"
+                                    Background="{Binding EsUsuario, Converter={StaticResource BoolToColorConverter}}"
+                                    CornerRadius="5"
+                                    MaxWidth="600"
+                                    MinWidth="200">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Contenido}" TextWrapping="Wrap"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                        <Button 
+                                            Style="{StaticResource ControlButton}"
+                                            Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
+                                            Command="{Binding DataContext.ReadMessageCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding Contenido}"
+                                            Tag="/Resources/Images/text_to_speech_icon.png"/>
+                                        <Button 
+                                            Style="{StaticResource ControlButton}"
+                                            Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
+                                            Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding Contenido}"
+                                            Tag="/Resources/Images/clipboard_icon.png"/>
+                                    </StackPanel>
+                                </StackPanel>
+
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+
+                <Border Background="#1E1E1E"
+                        CornerRadius="20"
+                        Margin="12"
+                        Grid.Row="1"
+                        Width="600">
+
+                    <Grid Grid.Row="1" MaxHeight="100">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="8*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBox x:Name="UserInput"
+                                 Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
+                                 Grid.Column="1"
+                                 Background="#1E1E1E"
+                                 Foreground="White"
+                                 BorderThickness="0"
+                                 FontSize="14"
+                                 VerticalAlignment="Center"/>
+
+                        <Button x:Name="ToggleButton"
+                                Height="35"
+                                Width="35"
+                                Margin="5"
+                                Grid.Column="2"
+                                Background="Transparent"
+                                BorderThickness="0"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Style="{StaticResource RoundedButtonStyle}"
+                                Command="{Binding ButtonClickedCommand}">
+                        </Button>
+                        <Popup IsOpen="{Binding IsRecording}"
+                               PlacementTarget="{Binding ElementName=ToggleButton}"
+                               Placement="Top"
+                               StaysOpen="True">
+                            <Border Background="#1E1E1E"
+                                    CornerRadius="4"
+                                    Padding="8">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Micrófono activo" Foreground="White"/>
+                                    <ProgressBar Minimum="0"
+                                                 Maximum="100"
+                                                 Value="{Binding AudioLevel}"
+                                                 Height="10"
+                                                 Margin="0,5,0,0"/>
+                                    <Ellipse Width="20"
+                                             Height="20"
+                                             Fill="Green"
+                                             Margin="0,5,0,0">
+                                        <Ellipse.OpacityMask>
+                                            <VisualBrush>
+                                                <VisualBrush.Visual>
+                                                    <Ellipse Width="20"
+                                                             Height="20"
+                                                             Fill="Green"
+                                                             Opacity="{Binding AudioLevel, Converter={StaticResource AudioLevelToOpacityConverter}}"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Ellipse.OpacityMask>
+                                    </Ellipse>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Grid>
+                </Border>
+            </Grid>
+        </DockPanel>
     </Grid>
 </Window>

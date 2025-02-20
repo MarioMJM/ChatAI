@@ -4,6 +4,7 @@ using ChatAI.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -23,6 +24,7 @@ namespace ChatAI.VistaModelo
         private string _text;
         private bool _isSend;
         private bool _isRecording = false;
+        private int _audioLevel = 0;
         private BitmapImage _iconSource;
 
         public ObservableCollection<Mensaje> MessageHistory { get; } = new ObservableCollection<Mensaje>();
@@ -38,8 +40,8 @@ namespace ChatAI.VistaModelo
                     OnPropertyChanged();
                     IsSend = !string.IsNullOrEmpty(_text);
                     IconSource = string.IsNullOrWhiteSpace(_text)
-                        ? new BitmapImage(new Uri("pack://application:,,,/Resources/Images/mic_button.png"))
-                        : new BitmapImage(new Uri("pack://application:,,,/Resources/Images/send_button.png"));
+                        ? new BitmapImage(new Uri("pack://application:,,,/Resources/Images/mic_button_w.png"))
+                        : new BitmapImage(new Uri("pack://application:,,,/Resources/Images/send_button_w.png"));
                     ((RelayCommand)ButtonClickedCommand).RaiseCanExecuteChanged();
                 }
             }
@@ -71,6 +73,16 @@ namespace ChatAI.VistaModelo
             }
         }
 
+        public int AudioLevel
+        {
+            get => _audioLevel;
+            set
+            {
+                _audioLevel = value;
+                OnPropertyChanged();
+            }
+        }
+
         public BitmapImage IconSource
         {
             get => _iconSource;
@@ -93,7 +105,7 @@ namespace ChatAI.VistaModelo
             ButtonClickedCommand = new RelayCommand(() => HandleButtonToggle(), () => true);
             ReadMessageCommand = new RelayCommandAdvanced<string>(ReadMessage, () => true);
             CopyToClipboardCommand = new RelayCommandAdvanced<string>(CopyToClipboard, () => true);
-            IconSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/mic_button.png"));
+            IconSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/mic_button_w.png"));
         }
 
         private async void HandleButtonToggle()
@@ -171,6 +183,9 @@ namespace ChatAI.VistaModelo
                 speechToText.SpeechRecognized -= OnSpeechRecognized;
                 speechToText.SpeechRecognized += OnSpeechRecognized;
 
+                speechToText.AudioLevelUpdated -= OnAudioLevelUpdated;
+                speechToText.AudioLevelUpdated += OnAudioLevelUpdated;
+
                 speechToText.StartRecognition();
             }
             else
@@ -193,6 +208,12 @@ namespace ChatAI.VistaModelo
                 _recognizedTextBuilder.Append(recognizedText).Append(" ");
                 Console.WriteLine($"Escuchado: {recognizedText}");
             }
+        }
+
+        private void OnAudioLevelUpdated(int audioLevel)
+        {
+            AudioLevel = audioLevel;
+            Trace.WriteLine(AudioLevel);
         }
 
         private void ReadMessage(string message)

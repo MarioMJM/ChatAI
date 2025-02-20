@@ -10,9 +10,17 @@
 
   <ItemGroup>
     <None Remove="Resources\Images\clipboard_icon.png" />
+    <None Remove="Resources\Images\clipboard_icon_w.png" />
+    <None Remove="Resources\Images\config_button_icon.png" />
+    <None Remove="Resources\Images\config_button_icon_w.png" />
     <None Remove="Resources\Images\mic_button.png" />
+    <None Remove="Resources\Images\mic_button_w.png" />
+    <None Remove="Resources\Images\new_button_icon.png" />
+    <None Remove="Resources\Images\new_button_icon_w.png" />
     <None Remove="Resources\Images\send_button.png" />
+    <None Remove="Resources\Images\send_button_w.png" />
     <None Remove="Resources\Images\text_to_speech_icon.png" />
+    <None Remove="Resources\Images\text_to_speech_icon_w.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,9 +42,17 @@
 
   <ItemGroup>
     <Resource Include="Resources\Images\clipboard_icon.png" />
+    <Resource Include="Resources\Images\clipboard_icon_w.png" />
+    <Resource Include="Resources\Images\config_button_icon.png" />
+    <Resource Include="Resources\Images\config_button_icon_w.png" />
     <Resource Include="Resources\Images\mic_button.png" />
+    <Resource Include="Resources\Images\mic_button_w.png" />
+    <Resource Include="Resources\Images\new_button_icon.png" />
+    <Resource Include="Resources\Images\new_button_icon_w.png" />
     <Resource Include="Resources\Images\send_button.png" />
+    <Resource Include="Resources\Images\send_button_w.png" />
     <Resource Include="Resources\Images\text_to_speech_icon.png" />
+    <Resource Include="Resources\Images\text_to_speech_icon_w.png" />
   </ItemGroup>
 
 </Project>

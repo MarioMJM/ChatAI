@@ -13,6 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters:BoolToColorConverter x:Key="BoolToColorConverter"/>
             <converters:BoolToHorizontalAlignmentConverter x:Key="BoolToHorizontalAlignmentConverter"/>
+            <converters:AudioLevelToOpacityConverter x:Key="AudioLevelToOpacityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

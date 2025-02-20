@@ -12,6 +12,7 @@ namespace ChatAI.Utils
         private SpeechRecognitionEngine SpeechRecognition;
         public event Action<string> SpeechRecognized;
         public event Action<string> SpeechHypothesized;
+        public event Action<int> AudioLevelUpdated;
 
         public SpeechToText()
         {
@@ -26,6 +27,7 @@ namespace ChatAI.Utils
             SpeechRecognition.AudioStateChanged += RecognizerAudioStateChanged;
             SpeechRecognition.SpeechHypothesized += RecognizerSpeechHypothesized;
             SpeechRecognition.SpeechRecognized += RecognizerSpeechRecognized;
+            SpeechRecognition.AudioLevelUpdated += RecognizerAudioLevelUpdated;
             SpeechRecognition.LoadGrammar(new DictationGrammar());
             SpeechRecognition.SetInputToDefaultAudioDevice();
 
@@ -68,6 +70,11 @@ namespace ChatAI.Utils
         {
             string recognizedText = e.Result.Text;
             SpeechRecognized?.Invoke(recognizedText);
+        }
+
+        private void RecognizerAudioLevelUpdated(object sender, AudioLevelUpdatedEventArgs e)
+        {
+            AudioLevelUpdated?.Invoke(e.AudioLevel);
         }
     }
 }
