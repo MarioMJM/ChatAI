@@ -120,9 +120,9 @@ namespace ChatAI.VistaModelo
             {
                 messages = new[]
                 {
-        new { content = "Me llamo Goyo y soy un asistente que habla en español.", role = "system" },
-        new { content = mensajeUsuario.Contenido, role = "user" }
-    },
+                    new { content = "Me llamo Goyo y soy un asistente que habla en español.", role = "system" },
+                    new { content = mensajeUsuario.Contenido, role = "user" }
+                },
                 model = "llama3.2-1b-instruct",
                 max_tokens = 2048
             };
