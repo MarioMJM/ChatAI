@@ -3,8 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:behaviors="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
         xmlns:local="clr-namespace:ChatAI"
         xmlns:converters="clr-namespace:ChatAI.Converters"
+        
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
@@ -209,19 +212,19 @@
                                     MinWidth="200">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="{Binding Contenido}" TextWrapping="Wrap"/>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,5,0,0">
                                         <Button 
                                             Style="{StaticResource ControlButton}"
                                             Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
                                             Command="{Binding DataContext.ReadMessageCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding Contenido}"
-                                            Tag="/Resources/Images/text_to_speech_icon.png"/>
+                                            Tag="/Resources/Images/text_to_speech_icon_w.png"/>
                                         <Button 
                                             Style="{StaticResource ControlButton}"
                                             Background="{Binding RelativeSource={RelativeSource AncestorType=Border}, Path=Background}"
                                             Command="{Binding DataContext.CopyToClipboardCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding Contenido}"
-                                            Tag="/Resources/Images/clipboard_icon.png"/>
+                                            Tag="/Resources/Images/clipboard_icon_w.png"/>
                                     </StackPanel>
                                 </StackPanel>
 
@@ -238,25 +241,51 @@
 
                     <Grid Grid.Row="1" MaxHeight="100">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="8*"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBox x:Name="UserInput"
                                  Text="{Binding Text, UpdateSourceTrigger=PropertyChanged}"
-                                 Grid.Column="1"
+                                 Grid.Column="0"
                                  Background="#1E1E1E"
                                  Foreground="White"
                                  BorderThickness="0"
                                  FontSize="14"
-                                 VerticalAlignment="Center"/>
+                                 VerticalAlignment="Center"
+                                 Margin="15,0,0,0">
+                            <behaviors:Interaction.Triggers>
+                                <behaviors:EventTrigger EventName="KeyDown">
+                                    <behaviors:InvokeCommandAction Command="{Binding EnterKeyCommand}" PassEventArgsToCommand="True"/>
+                                </behaviors:EventTrigger>
+                            </behaviors:Interaction.Triggers>
+
+                            <TextBox.Resources>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="TextBox">
+                                                <Grid>
+                                                    <TextBlock Text="Habla conmigo"
+                                                               Foreground="LightGray"
+                                                               FontSize="14"
+                                                               VerticalAlignment="Center"
+                                                               IsHitTestVisible="False"
+                                                               Visibility="{Binding Text, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource TextToVisibilityConverter}}"/>
+                                                    <ScrollViewer x:Name="PART_ContentHost" Padding="15,0,0,0"/>
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </TextBox.Resources>
+                        </TextBox>
 
                         <Button x:Name="ToggleButton"
                                 Height="35"
                                 Width="35"
                                 Margin="5"
-                                Grid.Column="2"
+                                Grid.Column="1"
                                 Background="Transparent"
                                 BorderThickness="0"
                                 VerticalAlignment="Center"

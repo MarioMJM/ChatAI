@@ -99,6 +99,7 @@ namespace ChatAI.VistaModelo
         public ICommand ButtonClickedCommand { get; }
         public ICommand ReadMessageCommand { get; }
         public ICommand CopyToClipboardCommand { get; }
+        public ICommand EnterKeyCommand { get; }
 
         public ChatViewModel()
         {
@@ -106,6 +107,15 @@ namespace ChatAI.VistaModelo
             ReadMessageCommand = new RelayCommandAdvanced<string>(ReadMessage, () => true);
             CopyToClipboardCommand = new RelayCommandAdvanced<string>(CopyToClipboard, () => true);
             IconSource = new BitmapImage(new Uri("pack://application:,,,/Resources/Images/mic_button_w.png"));
+            EnterKeyCommand = new RelayCommandAdvanced<KeyEventArgs>(ExecuteEnterKey, () => true);
+        }
+
+        private void ExecuteEnterKey(KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && !string.IsNullOrEmpty(Text))
+            {
+                _ = SendMessage();
+            }
         }
 
         private async void HandleButtonToggle()

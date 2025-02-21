@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
     <PackageReference Include="System.Speech" Version="9.0.2" />
   </ItemGroup>
