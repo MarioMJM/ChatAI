@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ChatAI" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Instructions" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">Me llamo Goyo y soy un asistente que habla en español.</Value>
+    </Setting>
+    <Setting Name="Model" Type="System.String" Scope="User">
+      <Value Profile="(Default)">llama3.2-1b-instruct</Value>
+    </Setting>
+    <Setting Name="RequestUri" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://localhost:1337/v1/chat/completions</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

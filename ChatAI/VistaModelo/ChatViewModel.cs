@@ -142,7 +142,7 @@ namespace ChatAI.VistaModelo
 
             try
             {
-                var response = await _httpClient.PostAsync("http://localhost:1337/v1/chat/completions", httpContent);
+                var response = await _httpClient.PostAsync(Settings.Default.RequestUri, httpContent);
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var resultado = JsonSerializer.Deserialize<ChatResponse>(responseBody);
@@ -163,7 +163,7 @@ namespace ChatAI.VistaModelo
                 messages = new[]
                 {
                     new {
-                        content = "Me llamo Goyo y soy un asistente que habla en español.",
+                        content = Settings.Default.Instructions,
                         role = "system"
                     },
                     new {
@@ -171,7 +171,7 @@ namespace ChatAI.VistaModelo
                         role = "user"
                     }
                 },
-                model = "llama3.2-1b-instruct",
+                model = Settings.Default.Model,
                 max_tokens = 2048
             };
 
