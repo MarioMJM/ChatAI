@@ -9,6 +9,12 @@ using System.Windows;
 
 namespace ChatAI.Converters
 {
+    /// <summary>
+    /// Convertidor usado para determinar la posición de los mensajes según se trate del 
+    /// usuario o de la IA. Si es un mensaje del usuario, devuelve HorizontalAlignment.Right;
+    /// de lo contrario, HorizontalAlignment.Left.
+    /// </summary>
+    /// <seealso cref="System.Windows.Data.IValueConverter" />
     public class BoolToHorizontalAlignmentConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

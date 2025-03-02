@@ -19,8 +19,10 @@ namespace ChatAI.VistaModelo
     public class ChatViewModel : ViewModelBase
     {
         private readonly HttpClient _httpClient = new();
-        private readonly SpeechToText speechToText = new();
+        private readonly SpeechToText speechToText = new SpeechToText();
         private readonly TextToSpeech textToSpeech = new();
+        private TaskCompletionSource<string> _taskCompletitionSource;
+        private StringBuilder _recognizedTextBuilder;
         private string _text;
         private bool _isSend;
         private bool _isRecording = false;
@@ -221,9 +223,11 @@ namespace ChatAI.VistaModelo
             return new StringContent(json, Encoding.UTF8, "application/json");
         }
 
-        private TaskCompletionSource<string> _taskCompletitionSource;
-        private StringBuilder _recognizedTextBuilder;
-
+        /// <summary>
+        /// Inicia o detiene el reconocimiento de voz. 
+        /// Si no está grabando, comienza la captura de audio y procesa el reconocimiento.
+        /// Si ya está grabando, detiene el reconocimiento y devuelve el texto capturado.
+        /// </summary>
         private async Task RecordSpeech()
         {
             if (!IsRecording)
@@ -252,26 +256,42 @@ namespace ChatAI.VistaModelo
             }
         }
 
+        /// <summary>
+        /// Acumula el texto reconocido. Se hace de esta manera para que todo el texto reconocido
+        /// se muestre al apagar el micrófono.
+        /// </summary>
+        /// <param name="recognizedText">Texto reconocido por el sistema de voz.</param>
         private void OnSpeechRecognized(string recognizedText)
         {
             if (IsRecording)
             {
                 _recognizedTextBuilder.Append(recognizedText).Append(" ");
-                Console.WriteLine($"Escuchado: {recognizedText}");
             }
         }
 
+        /// <summary>
+        /// Maneja el evento de actualización del nivel de audio. Lo muestra en la interfaz
+        /// a través de una barra de progreso con ayuda del convertidor AudioLevelToOpacityConverter.
+        /// </summary>
+        /// <param name="audioLevel">Nivel actual del audio capturado.</param>
         private void OnAudioLevelUpdated(int audioLevel)
         {
             AudioLevel = audioLevel;
-            Trace.WriteLine(AudioLevel);
         }
 
+        /// <summary>
+        /// Reproduce el mensaje utilizando el sistema de conversión de texto a voz (TTS).
+        /// </summary>
+        /// <param name="message">El mensaje que se leerá en voz alta.</param>
         private void ReadMessage(string message)
         {
             textToSpeech.ReadText(message);
         }
 
+        /// <summary>
+        /// Copia el contenido especificado al portapapeles del usuario.
+        /// </summary>
+        /// <param name="content">El contenido que se copia.</param>
         private void CopyToClipboard(string content)
         {
             Clipboard.SetText(content);

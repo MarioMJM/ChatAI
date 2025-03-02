@@ -8,6 +8,10 @@ using System.Windows.Data;
 
 namespace ChatAI.Converters
 {
+    /// <summary>
+    /// Convertidor de intensidad del audio a opacidad.
+    /// </summary>
+    /// <seealso cref="System.Windows.Data.IValueConverter" />
     public class AudioLevelToOpacityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

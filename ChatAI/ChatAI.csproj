@@ -26,6 +26,19 @@
     <None Remove="Resources\Images\send_button_w.png" />
     <None Remove="Resources\Images\text_to_speech_icon.png" />
     <None Remove="Resources\Images\text_to_speech_icon_w.png" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\am\final.mdl" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\conf\mfcc.conf" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\conf\model.conf" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\graph\disambig_tid.int" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\graph\Gr.fst" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\graph\HCLr.fst" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\graph\phones\word_boundary.int" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.dubm" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.ie" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.mat" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\global_cmvn.stats" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\online_cmvn.conf" />
+    <None Remove="Resources\Vosk\vosk-model-small-es-0.42\ivector\splice.conf" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,9 +54,54 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\am\final.mdl">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\conf\mfcc.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\conf\model.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\graph\disambig_tid.int">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\graph\Gr.fst">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\graph\HCLr.fst">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\graph\phones\word_boundary.int">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.dubm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.ie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\final.mat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\global_cmvn.stats">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\online_cmvn.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Vosk\vosk-model-small-es-0.42\ivector\splice.conf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Speech" Version="9.0.2" />
+    <PackageReference Include="Vosk" Version="0.3.38" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 

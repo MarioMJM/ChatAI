@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace ChatAI.Modelo
 {
+    /// <summary>
+    /// Clase envoltorio para los mensajes del usuario y la IA.
+    /// </summary>
     public class Mensaje
     {
         public string Contenido { get; set; }

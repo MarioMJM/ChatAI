@@ -166,7 +166,8 @@
                         x:Name="ButtonConfig" 
                         Style="{StaticResource PanelButtonStyle}" 
                         Tag="/Resources/Images/config_button_icon_w.png"
-                        Click="ButtonConfig_Click"/>
+                        Click="ButtonConfig_Click"
+                        Visibility="Collapsed"/> <!--Decidir qué hacer-->
                     <Popup x:Name="PopupConfig"
                            PlacementTarget="{Binding ElementName=ButtonConfig}"
                            Placement="Right"
