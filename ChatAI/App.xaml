@@ -15,6 +15,7 @@
             <converters:BoolToHorizontalAlignmentConverter x:Key="BoolToHorizontalAlignmentConverter"/>
             <converters:AudioLevelToOpacityConverter x:Key="AudioLevelToOpacityConverter"/>
             <converters:TextToVisibilityConverter x:Key="TextToVisibilityConverter"/>
+            <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

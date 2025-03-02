@@ -101,6 +101,11 @@ namespace ChatAI.VistaModelo
         public ICommand CopyToClipboardCommand { get; }
         public ICommand EnterKeyCommand { get; }
 
+        /// <summary>
+        /// Inicializa una nueva instancia de la clase <see cref="ChatViewModel"/>.
+        /// Esto inicializa a su vez los comandos asociados a los controles de la ventana
+        /// y el icono del botón principal.
+        /// </summary>
         public ChatViewModel()
         {
             ButtonClickedCommand = new RelayCommand(() => HandleButtonToggle(), () => true);
@@ -110,6 +115,11 @@ namespace ChatAI.VistaModelo
             EnterKeyCommand = new RelayCommandAdvanced<KeyEventArgs>(ExecuteEnterKey, () => true);
         }
 
+        /// <summary>
+        /// Simula una pulsación de la tecla Intro. El método sirve para enviar
+        /// el texto que introduce el usuario al pulsar Intro.
+        /// </summary>
+        /// <param name="e">El parametro <see cref="KeyEventArgs"/> contiene la información del evento.</param>
         private void ExecuteEnterKey(KeyEventArgs e)
         {
             if (e.Key == Key.Enter && !string.IsNullOrEmpty(Text))
@@ -118,6 +128,12 @@ namespace ChatAI.VistaModelo
             }
         }
 
+        /// <summary>
+        /// Método que alterna la funcionalidad del botón principal entre enviar un mensaje
+        /// o grabar el audio del usuario. Cuando la caja de texto está vacía, el método
+        /// por defecto es <see cref="RecordSpeech"/>. Cuando el usuario introduce texto
+        /// o graba audio, el cual se muestra en la caja de texto, se cambia a <see cref="SendMessage"/>.
+        /// </summary>
         private async void HandleButtonToggle()
         {
             if (IsSend)
@@ -130,10 +146,21 @@ namespace ChatAI.VistaModelo
             }
         }
 
+        /// <summary>
+        /// Método que toma el contenido de la caja de texto, crea una solicitud HTTP, recibe
+        /// una respuesta y finalmente muestra el mensaje del usuario y la respuesta en la lista
+        /// de mensajes. El método también limpia la caja de texto y notifica el cambio.
+        /// </summary>
         private async Task SendMessage()
         {
             var mensajeUsuario = new Mensaje { Contenido = Text, EsUsuario = true };
             MessageHistory.Add(mensajeUsuario);
+
+            var mensajeBotLoading = new Mensaje { Contenido = "", EsUsuario = false };
+            MessageHistory.Add(mensajeBotLoading);
+
+            int loadingIndex = MessageHistory.IndexOf(mensajeBotLoading);
+
             Text = string.Empty;
             IsSend = false;
             ((RelayCommand)ButtonClickedCommand).RaiseCanExecuteChanged();
@@ -145,17 +172,32 @@ namespace ChatAI.VistaModelo
                 var response = await _httpClient.PostAsync(Settings.Default.RequestUri, httpContent);
                 response.EnsureSuccessStatusCode();
                 var responseBody = await response.Content.ReadAsStringAsync();
+                Trace.WriteLine("Respuesta recibida");
                 var resultado = JsonSerializer.Deserialize<ChatResponse>(responseBody);
 
                 var mensajeBot = new Mensaje { Contenido = resultado.choices[0].message.content, EsUsuario = false };
-                MessageHistory.Add(mensajeBot);
+
+                if (loadingIndex >= 0)
+                {
+                    MessageHistory[loadingIndex] = mensajeBot;
+                }
             }
             catch (Exception ex)
             {
-                MessageHistory.Add(new Mensaje { Contenido = "Error en la respuesta: " + ex.Message, EsUsuario = false });
+                if (loadingIndex >= 0)
+                {
+                    MessageHistory[loadingIndex] = new Mensaje { Contenido = "Error en la respuesta: " + ex.Message, EsUsuario = false };
+                }
             }
         }
 
+        /// <summary>
+        /// Crea el contenido de una solicitud Http dado el mensaje del usuario.
+        /// Usa las variables contenidas en Settings.settings para describir los roles
+        /// y las instrucciones de la solicitud./>
+        /// </summary>
+        /// <param name="message">El mensaje del usuario.</param>
+        /// <returns>Devuelve el contenido serializado de la solicitud Http.</returns>
         private HttpContent CreateContent(Mensaje message)
         {
             var requestBody = new
@@ -204,7 +246,6 @@ namespace ChatAI.VistaModelo
 
                 _taskCompletitionSource.TrySetResult(_recognizedTextBuilder.ToString());
                 string result = await _taskCompletitionSource.Task;
-                Console.WriteLine($"Reconocido: {result}");
                 Text = result;
 
                 IsRecording = false;

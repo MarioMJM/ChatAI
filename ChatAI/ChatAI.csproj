@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\GIF\chatbot.gif" />
+    <None Remove="Resources\GIF\chatbot_greet.gif" />
+    <None Remove="Resources\GIF\chatbot_greet_nobg.gif" />
+    <None Remove="Resources\GIF\chatbot_nobg.gif" />
     <None Remove="Resources\Images\clipboard_icon.png" />
     <None Remove="Resources\Images\clipboard_icon_w.png" />
     <None Remove="Resources\Images\config_button_icon.png" />
@@ -39,9 +43,16 @@
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
     <PackageReference Include="ModernWpfUI" Version="0.9.6" />
     <PackageReference Include="System.Speech" Version="9.0.2" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\GIF\chatbot.gif" />
+    <Resource Include="Resources\GIF\chatbot_greet.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\GIF\chatbot_greet_nobg.gif" />
+    <Resource Include="Resources\GIF\chatbot_nobg.gif" />
     <Resource Include="Resources\Images\clipboard_icon.png" />
     <Resource Include="Resources\Images\clipboard_icon_w.png" />
     <Resource Include="Resources\Images\config_button_icon.png" />
