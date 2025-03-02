@@ -13,6 +13,7 @@
     <None Remove="Resources\GIF\chatbot_greet.gif" />
     <None Remove="Resources\GIF\chatbot_greet_nobg.gif" />
     <None Remove="Resources\GIF\chatbot_nobg.gif" />
+    <None Remove="Resources\Icon\MIA_icon.ico" />
     <None Remove="Resources\Images\clipboard_icon.png" />
     <None Remove="Resources\Images\clipboard_icon_w.png" />
     <None Remove="Resources\Images\config_button_icon.png" />
@@ -53,6 +54,7 @@
     </Resource>
     <Resource Include="Resources\GIF\chatbot_greet_nobg.gif" />
     <Resource Include="Resources\GIF\chatbot_nobg.gif" />
+    <Resource Include="Resources\Icon\MIA_icon.ico" />
     <Resource Include="Resources\Images\clipboard_icon.png" />
     <Resource Include="Resources\Images\clipboard_icon_w.png" />
     <Resource Include="Resources\Images\config_button_icon.png" />

@@ -12,7 +12,7 @@
         mc:Ignorable="d"
         xmlns:ui="http://schemas.modernwpf.com/2019"
         ui:WindowHelper.UseModernWindowStyle="True"
-        Title="MIA" Height="450" Width="800">
+        Title="MIA" Height="450" Width="800" Icon="/Resources/Icon/MIA_icon.ico">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="TextBox">
