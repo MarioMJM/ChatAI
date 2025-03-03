@@ -35,7 +35,6 @@ namespace ChatAI.Vista
             InitializeComponent();
             DataContext = new ChatViewModel();
 
-            //SwitchMode.IsOn = WindowHelper.GetUseModernWindowStyle(this);
             SwitchMode.IsOn = ThemeManager.Current.ActualApplicationTheme == ApplicationTheme.Dark;
         }
 
@@ -74,7 +73,7 @@ namespace ChatAI.Vista
         }
 
         /// <summary>
-        /// Maneja la lógica del Switch del modo oscuro.
+        /// Maneja la lógica del Switch del modo oscuro. En desuso.
         /// </summary>
         /// <param name="sender">El objeto que lo invoca.</param>
         /// <param name="e">La instancia de <see cref="RoutedEventArgs"/> que contiene la información del evento.</param>
@@ -83,11 +82,9 @@ namespace ChatAI.Vista
             ToggleSwitch toggleSwitch = (ToggleSwitch)sender;
             if (toggleSwitch.IsOn)
             {
-                //WindowHelper.SetUseModernWindowStyle(this, true);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Dark;
             } else
             {
-                //WindowHelper.SetUseModernWindowStyle(this, false);
                 ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
             }
         }
